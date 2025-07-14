@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AwoofData - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="loader">
+        <div class="loader-circle"></div>
+    </div>
+
+    <header class="header">
+        <div class="logo-container">
+            <h1 class="logo" data-text="AwoofData">AwoofData</h1>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="networks.html">Networks</a></li>
+                <li><a href="transactions.html">Transactions</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="dashboard.html" id="auth-link">Dashboard</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="dashboard-sidebar">
+            <div class="user-profile">
+                <div class="profile-pic">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 id="user-name">Loading...</h3>
+                <p id="user-email">Loading...</p>
+            </div>
+            <nav class="dashboard-nav">
+                <ul>
+                    <li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> Overview</a></li>
+                    <li><a href="transactions.html"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                    <li><a href="#"><i class="fas fa-wallet"></i> Wallet</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="dashboard-content">
+            <h2 class="dashboard-title">Dashboard Overview</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Account Balance</h3>
+                        <p id="user-balance">₦0.00</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Transactions</h3>
+                        <p id="total-transactions">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Data Purchased</h3>
+                        <p id="total-data">0GB</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recent-transactions">
+                <h3>Recent Transactions</h3>
+                <div class="transactions-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Plan</th>
+                                <th>Network</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-body">
+                            <!-- Transactions will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                <a href="transactions.html" class="view-all">View All Transactions</a>
+            </div>
+            
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <div class="actions-grid">
+                    <a href="networks.html" class="action-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Buy Data</span>
+                    </a>
+                    <a href="#" class="action-card">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Fund Wallet</span>
+                    </a>
+                    <a href="#" class="action-card">
+                        <i class="fas fa-user-cog"></i>
+                        <span>Profile Settings</span>
+                    </a>
+                    <a href="contact.html" class="action-card">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'auth.html';
+                return;
+            }
+            
+            // Load user data
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            
+            // Display user info
+            document.getElementById('user-name').textContent = userData.name;
+            document.getElementById('user-email').textContent = userData.email;
+            document.getElementById('user-balance').textContent = `₦${userData.balance.toLocaleString()}.00`;
+            
+            // Process transactions
+            if (userData.transactions && userData.transactions.length > 0) {
+                document.getElementById('total-transactions').textContent = userData.transactions.length;
+                
+                // Calculate total data purchased (simplified)
+                const totalData = userData.transactions.reduce((total, tx) => {
+                    const dataMatch = tx.plan.match(/(\d+(\.\d+)?)GB/);
+                    if (dataMatch) {
+                        return total + parseFloat(dataMatch[1]);
+                    }
+                    return total;
+                }, 0);
+                
+                document.getElementById('total-data').textContent = `${totalData}GB`;
+                
+                // Display recent transactions (last 5)
+                const recentTx = userData.transactions.slice(-5).reverse();
+                const txBody = document.getElementById('transactions-body');
+                
+                recentTx.forEach(tx => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${tx.id}</td>
+                        <td>${tx.plan}</td>
+                        <td>${tx.network}</td>
+                        <td>${tx.amount}</td>
+                        <td>${tx.date}</td>
+                        <td><span class="status-badge ${tx.status.toLowerCase()}">${tx.status}</span></td>
+                    `;
+                    txBody.appendChild(row);
+                });
+            }
+            
+            // Logout button
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>

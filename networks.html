@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Networks | DataSellNG</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="loader">
+        <div class="loader-circle"></div>
+    </div>
+
+    <header class="header">
+        <div class="logo-container">
+            <h1 class="logo" data-text="AwoofData">AwoofData</h1>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="networks.html" class="active">Networks</a></li>
+                <li><a href="transactions.html">Transactions</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="dashboard.html" id="auth-link">Dashboard</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <main class="networks-container">
+        <h1 class="page-title">Supported Networks</h1>
+        <p class="page-subtitle">We support all major networks in Nigeria with competitive rates</p>
+        
+        <div class="networks-grid">
+            <div class="network-card">
+                <div class="network-logo-container">
+                    <img src="mtn.jpg" alt="MTN" class="network-logo">
+                </div>
+                <div class="network-info">
+                    <h2>MTN Nigeria</h2>
+                    <p>Largest network in Nigeria with over 70 million subscribers</p>
+                    <div class="network-stats">
+                        <div class="stat">
+                            <i class="fas fa-users"></i>
+                            <span>70M+ Users</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Nationwide</span>
+                        </div>
+                    </div>
+                    <a href="#mtn-plans" class="view-plans-btn">View Plans</a>
+                </div>
+            </div>
+            
+            <div class="network-card">
+                <div class="network-logo-container">
+                    <img src="glos.jpeg" alt="GLO" class="network-logo">
+                </div>
+                <div class="network-info">
+                    <h2>GLO Nigeria</h2>
+                    <p>Known for affordable data plans and bonuses</p>
+                    <div class="network-stats">
+                        <div class="stat">
+                            <i class="fas fa-users"></i>
+                            <span>50M+ Users</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Nationwide</span>
+                        </div>
+                    </div>
+                    <a href="#glo-plans" class="view-plans-btn">View Plans</a>
+                </div>
+            </div>
+            
+            <div class="network-card">
+                <div class="network-logo-container">
+                    <img src="artel.jpeg" alt="Airtel" class="network-logo">
+                </div>
+                <div class="network-info">
+                    <h2>Airtel Nigeria</h2>
+                    <p>Fast growing network with good coverage</p>
+                    <div class="network-stats">
+                        <div class="stat">
+                            <i class="fas fa-users"></i>
+                            <span>45M+ Users</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Nationwide</span>
+                        </div>
+                    </div>
+                    <a href="#airtel-plans" class="view-plans-btn">View Plans</a>
+                </div>
+            </div>
+            
+            <div class="network-card">
+                <div class="network-logo-container">
+                    <img src="9.jpeg" alt="9mobile" class="network-logo">
+                </div>
+                <div class="network-info">
+                    <h2>9mobile Nigeria</h2>
+                    <p>Formerly Etisalat, known for data services</p>
+                    <div class="network-stats">
+                        <div class="stat">
+                            <i class="fas fa-users"></i>
+                            <span>20M+ Users</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Nationwide</span>
+                        </div>
+                    </div>
+                    <a href="#9mobile-plans" class="view-plans-btn">View Plans</a>
+                </div>
+            </div>
+        </div>
+        
+        <section class="network-plans-section" id="mtn-plans">
+            <h2 class="section-title">MTN Data Plans</h2>
+            <div class="plans-container">
+                <!-- MTN plans will be loaded here -->
+            </div>
+        </section>
+        
+        <section class="network-plans-section" id="glo-plans">
+            <h2 class="section-title">GLO Data Plans</h2>
+            <div class="plans-container">
+                <!-- GLO plans will be loaded here -->
+            </div>
+        </section>
+        
+        <section class="network-plans-section" id="airtel-plans">
+            <h2 class="section-title">Airtel Data Plans</h2>
+            <div class="plans-container">
+                <!-- Airtel plans will be loaded here -->
+            </div>
+        </section>
+        
+        <section class="network-plans-section" id="9mobile-plans">
+            <h2 class="section-title">9mobile Data Plans</h2>
+            <div class="plans-container">
+                <!-- 9mobile plans will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load plans for each network
+            const networks = ['mtn', 'glo', 'airtel', '9mobile'];
+            
+            networks.forEach(network => {
+                const container = document.querySelector(`#${network}-plans .plans-container`);
+                const plans = dataPlans[network];
+                
+                plans.forEach(plan => {
+                    const planCard = document.createElement('div');
+                    planCard.className = 'plan-card fade-in';
+                    planCard.innerHTML = `
+                        <div class="plan-header">
+                            <h3 class="plan-name">${plan.name}</h3>
+                            <p class="plan-price">${plan.price}</p>
+                        </div>
+                        <div class="plan-body">
+                            <ul class="plan-details">
+                                <li><span>Data Volume:</span> <span>${plan.data}</span></li>
+                                <li><span>Validity:</span> <span>${plan.validity}</span></li>
+                                <li><span>Network:</span> <span>${network.toUpperCase()}</span></li>
+                            </ul>
+                            <button class="plan-button" data-id="${plan.id}">Buy Now</button>
+                        </div>
+                    `;
+                    container.appendChild(planCard);
+                });
+                
+                // Add event listeners to buy buttons
+                document.querySelectorAll(`#${network}-plans .plan-button`).forEach(button => {
+                    button.addEventListener('click', function() {
+                        const planId = this.getAttribute('data-id');
+                        buyPlan(planId);
+                    });
+                });
+            });
+            
+            // Smooth scrolling for view plans buttons
+            document.querySelectorAll('.view-plans-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
